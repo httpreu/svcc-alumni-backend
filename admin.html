@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Admin Dashboard</h1>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        async function checkAuth() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("Access Denied!");
+                window.location.href = "index.html";
+            }
+
+            const response = await fetch("http://localhost:5000/dashboard", {
+                headers: { "Authorization": token }
+            });
+
+            if (!response.ok) {
+                alert("Session Expired. Please login again.");
+                window.location.href = "index.html";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "index.html";
+        }
+
+        checkAuth();
+    </script>
+</body>
+</html>
